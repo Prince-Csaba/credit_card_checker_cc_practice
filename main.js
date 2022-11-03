@@ -1,4 +1,5 @@
 // All valid credit card numbers
+const valid0 = [4, 5, 3, 9, 6, 8, 9, 8, 8, 7, 7, 0, 5, 7, 9, 8]
 const valid1 = [4, 5, 3, 9, 6, 7, 7, 9, 0, 8, 0, 1, 6, 8, 0, 8]
 const valid2 = [5, 5, 3, 5, 7, 6, 6, 7, 6, 8, 7, 5, 1, 4, 3, 9]
 const valid3 = [3, 7, 1, 6, 1, 2, 0, 1, 9, 9, 8, 5, 2, 3, 6]
@@ -26,9 +27,60 @@ const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, inval
 // Add your functions below:
 const testFunc = () =>  {}
 
+const validateCred = arr => {
+  let sum = 0;
+  // console.log(sum);
+  for (let i = arr.length-1;i >= 0; i--){
+    // console.log(`Sum at num${i} :${arr[i]}, ${sum}`);
+    // console.log(arr[i]);
+    sum += arr[i];
+    if (i % 2 === 0) {
+      sum += arr[i];
+      if (arr[i]*2 > 9) {
+        sum -= 9;
+        // console.log(`Here in the special part, actual number ${arr[i]}, sum: ${sum}`)
+      }
+    }
+  }
+  // console.log(sum);
+  return sum % 10 === 0
+}
+
+/* console.log(validateCred(invalid1));
+console.log(validateCred(invalid2));
+console.log(validateCred(invalid3));
+console.log(validateCred(invalid4));
+console.log(validateCred(invalid5)); */
 
 
+const findInvalidCards = (arrayList) => {
+  return arrayList.filter((arr) => validateCred(arr) === true)
+}
 
+console.log('Invalid arrays: ');
+let invalidCards = findInvalidCards(batch);
+console.log(findInvalidCards(batch));
+
+const idInvalidCardCompanies = (invalidCardsList) => {
+  let companyList = [];
+  invalidCardsList.map((list) => {
+    if (list[0] === 3) {
+      companyList.push('Amex');
+    } else if (list[0] === 4) {
+      companyList.push('Visa');
+    } else if (list[0] === 5) {
+      companyList.push('Mastercard');
+    } else if (list[0] === 6) {
+      companyList.push('Discover');
+    } else {
+      companyList.push('Company not found');
+    }
+  })
+  let uniqueList = [...new Set(companyList)]
+  return uniqueList;
+}
+
+console.log(idInvalidCardCompanies(invalidCards));
 
 
 
